@@ -1,2 +1,3 @@
-agenda.sqlite3
-__pycache__
+sistema/bd/agenda.sqlite3
+sistema/__pycache__/
+sistema/bd/__pycache__/

@@ -1,15 +1,18 @@
 from msilib.schema import Error
 from .bd import nova_conexao, criar_tabela
-
+from hashlib import md5
 
 class Crud:
 
     def inserirUsuario(self, nome, telefone, email, senha, nivel):
         with nova_conexao() as conexao:
+            senha = senha.encode('utf8')
+            cripto = md5(senha).hexdigest()
+
             try:
                 cursor = conexao.cursor()
                 cursor.execute("insert into contatos (nome, tel, email, senha, nivel) values ('" +
-                               nome + "', '" + telefone + "', '" + email + "', '" + senha + "', '" + nivel + "')")
+                               nome + "', '" + telefone + "', '" + email + "', '" + cripto + "', '" + nivel + "')")
                 conexao.commit()
             except:
                 print(f' Erro de inserção do registro!')
@@ -71,7 +74,9 @@ class Crud:
                 print(f' Erro na na exclusão do registro!')
 
     def checkLogin(self, email, senha):
-        args = (email, senha)
+        senha = senha.encode('utf8')
+        cripto = md5(senha).hexdigest()
+        args = (email, cripto)
         with nova_conexao() as conexao:
             try:
                 sql = "SELECT * FROM contatos WHERE email=? AND senha=? AND nivel='adm' "
