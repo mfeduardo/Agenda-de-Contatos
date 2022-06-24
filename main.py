@@ -20,7 +20,6 @@ config = 0
 
 
 def exibir_janela_cadastro():
-    # listagem.close()
     if log == 1:
         cadastro.show()
         reset_form_mensagens(cadastro)
